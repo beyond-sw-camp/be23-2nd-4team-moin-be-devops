@@ -74,7 +74,8 @@ public class SecurityConfig {
 //                                채팅 연결 추가
                                 "/connect/**",
                                 "user/presigned-url",
-                                "/error"
+                                "/error",
+                                "/health"
                         )
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/crew/my-*").authenticated()
