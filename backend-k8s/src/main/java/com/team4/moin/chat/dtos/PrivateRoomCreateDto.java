@@ -1,0 +1,15 @@
+package com.team4.moin.chat.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class PrivateRoomCreateDto {
+    Long otherMemberId;
+    Long crewId;
+}
