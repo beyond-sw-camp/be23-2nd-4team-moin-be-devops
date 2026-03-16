@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -32,7 +33,7 @@ public class SettlementScheduler {
         log.info("=== 매시간 모임 자동 정산 스케줄러 시작 ===");
 
         // 모임 시작 시간이 현재로부터 3시간 이내인 모임 타겟팅
-        LocalDateTime targetTime = LocalDateTime.now().plusHours(3);
+        LocalDateTime targetTime = LocalDateTime.now(ZoneId.of("Asia/Seoul")).plusHours(3);
         log.info("조회 기준 시간 (현재+3시간): {}", targetTime);
         List<Meeting> meetingsToSettle = meetingRepository.findMeetingsToSettle(targetTime);
         log.info("조회된 정산 대상 모임 수: {}", meetingsToSettle.size());

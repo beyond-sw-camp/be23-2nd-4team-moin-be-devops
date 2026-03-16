@@ -75,7 +75,9 @@ public class SecurityConfig {
                                 "/connect/**",
                                 "user/presigned-url",
                                 "/error",
-                                "/health"
+                                "/health",
+                                "/notifications/connect",
+                                "/notifications/**"
                         )
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/crew/my-*").authenticated()
