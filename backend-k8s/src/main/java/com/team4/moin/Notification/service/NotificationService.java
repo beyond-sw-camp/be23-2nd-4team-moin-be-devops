@@ -8,6 +8,8 @@ import com.team4.moin.user.domain.entitys.User;
 import com.team4.moin.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -50,8 +53,13 @@ public class NotificationService {
      * 트랜잭션을 걸지 않음.
      */
     public void disconnect() {
+        try {
         Long userId = getCurrentUserId();
         sseService.disconnect(userId);
+    } catch (EntityNotFoundException | NullPointerException e) {
+        // 이미 로그아웃되거나 다른 파드로 요청이 간 경우 무시
+        log.warn("SSE disconnect 중 유저 정보 없음 - 무시: {}", e.getMessage());
+    }
     }
 
     // 로그인 사용자의 알림 목록 최신순 조회

@@ -45,5 +45,6 @@ jobs:
 
       - name: eks kubectl apply
         run: |
-          kubectl apply -f ./backend-k8s/k8s/depl_svc.yml
           kubectl rollout restart deployment moin-deployment -n moin
+        #  kubectl apply -f ./backend-k8s/k8s/depl_svc.yml
+          
