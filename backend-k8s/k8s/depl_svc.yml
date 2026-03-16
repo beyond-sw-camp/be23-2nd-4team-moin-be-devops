@@ -95,7 +95,27 @@ spec:
           valueFrom:
             secretKeyRef:
               name: moin-secrets
-              key: TMAP_KEY      
+              key: TMAP_KEY
+        - name: SECRETKEY_AT
+          valueFrom:
+            secretKeyRef:
+              name: moin-secrets
+              key: SECRETKEY_AT
+        - name: SECRETKEY_RT
+          valueFrom:
+            secretKeyRef:
+              name: moin-secrets
+              key: SECRETKEY_RT
+        - name: AWS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: moin-secrets
+              key: AWS_KEY
+        - name: AWS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: moin-secrets
+              key: AWS_SECRET      
         readinessProbe:
           httpGet:
             path: /health
