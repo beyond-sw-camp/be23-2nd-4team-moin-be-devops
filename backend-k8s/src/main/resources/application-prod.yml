@@ -10,7 +10,8 @@ spring:
 
   datasource:
     hikari:
-      maximum-pool-size: 30
+      maximum-pool-size: 5
+      minimum-idle: 2
       connection-timeout: 5000
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://${DB_HOST}:3306/moin?useSSL=true
