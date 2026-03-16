@@ -121,7 +121,9 @@ public class RedisConfig {
     @Qualifier("ssePubSub")
     public RedisConnectionFactory ssePubSubConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-
+        configuration.setHostName(host);
+        configuration.setPort(port);
+        configuration.setDatabase(9);
         return new LettuceConnectionFactory(configuration);
     }
 
