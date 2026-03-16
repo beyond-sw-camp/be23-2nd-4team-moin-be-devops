@@ -35,7 +35,7 @@ jobs:
       - name: build and push docker image to ecr
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: /moin/moiin
+          REPOSITORY: moin/moiin
           IMAGE_TAG: latest
         run: |
           docker build \
