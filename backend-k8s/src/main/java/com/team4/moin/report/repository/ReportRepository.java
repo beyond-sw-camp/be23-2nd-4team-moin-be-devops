@@ -23,9 +23,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Report> findAllByStatus(ReportStatus status);
 
-    @Query("SELECT new com.team4.moin.report.dtos.ReportCountDto(r.targetId, COUNT(r)) " +
-            "FROM Report r WHERE r.targetId IN :targetIds GROUP BY r.targetId")
-    List<ReportCountDto> countByTargetIds(@Param("targetIds") List<Long> targetIds);
+
     long countByTargetId(Long targetId);
     long countByStatus(ReportStatus status);
     @Query("SELECT new com.team4.moin.report.dtos.ReportCountDto(r.targetId, COUNT(r)) " +

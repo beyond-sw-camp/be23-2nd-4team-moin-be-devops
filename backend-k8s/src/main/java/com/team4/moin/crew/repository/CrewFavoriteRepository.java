@@ -14,8 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface CrewFavoriteRepository extends JpaRepository<CrewFavorite, Long> {
- //    특정 사용자가 찜한 크루
-    Optional<CrewFavorite> findByCrew_IdAndUser_Id(Long crewId, Long userId);
+
+
 //        크루 삭제시 찜 전체삭제
     void deleteAllByCrew_Id(Long crewId);
 //    // 특정 유저가 찜한 목록을 가져오되, 크루 정보까지 한 번에 패치조인

@@ -20,13 +20,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findAllByEmail(String email);
     @Query("select u from User u left join fetch u.address where u.email = :email")
     Optional<User> findAllByEmailWithAddress(@Param("email") String email);
+
     Optional<User> findByProviderId(String providerId);
+
     Optional<User> findByEmailAndDelYn(String email, String delYn);
+
     @Query(value = "select u from User u left join fetch u.address",
             countQuery = "select count(u) from User u")
     Page<User> findAllWithAddress(Pageable pageable);
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.address WHERE u.id IN :id")
-    List<User> findAllByIdWithAddress(@Param("id") List<Long> id);
+
     // 다른 트랜잭션은 이 유저 정보를 읽으려 해도 내 작업이 끝날 때까지 대기 , 비관적 락으로 동시성 이슈 해결
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select u from User u where u.id = :id")
