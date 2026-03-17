@@ -1,5 +1,7 @@
 package com.team4.moin.crewmember.dtos;
 
+import java.time.LocalDateTime;
+
 import com.team4.moin.crew.domain.enums.CrewRole;
 import com.team4.moin.crewmember.domain.entity.CrewMember;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,7 @@ public class CrewMemberListDto {
     private String nickname;
     private String profileImageUrl;
     private boolean isMe; //
-
+    private LocalDateTime joinedAt;
 
     public static CrewMemberListDto fromEntity(CrewMember crewMember) {
         return CrewMemberListDto.builder()
@@ -28,6 +30,7 @@ public class CrewMemberListDto {
                 .nickname(crewMember.getUser().getNickname())
                 .profileImageUrl(crewMember.getUser().getProfileImageUrl())
                 .isMe(false)
+                .joinedAt(crewMember.getCreatedTime())
                 .build();
     }
 
@@ -40,6 +43,7 @@ public class CrewMemberListDto {
                 .nickname(member.getUser().getNickname())
                 .profileImageUrl(member.getUser().getProfileImageUrl())
                 .isMe(isMe)
+                .joinedAt(member.getCreatedTime())
                 .build();
     }
 }
