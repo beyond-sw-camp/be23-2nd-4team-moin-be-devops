@@ -24,15 +24,6 @@ public interface ChatParticipantRepository extends JpaRepository<ChatParticipant
             "WHERE cp1.crewMember.user.id = :myUserId " +
             "AND cp2.crewMember.user.id = :otherUserId " +
             "AND cp1.chatRoom.isGroupChat = 'N' " +
-            "AND cp1.chatRoom.delYn = 'N'")
-    Optional<ChatRoom> findExistingPrivateRoom(@Param("myUserId") Long myUserId,
-                                               @Param("otherUserId") Long otherUserId);
-
-    @Query("SELECT cp1.chatRoom FROM ChatParticipant cp1 " +
-            "JOIN ChatParticipant cp2 ON cp1.chatRoom.id = cp2.chatRoom.id " +
-            "WHERE cp1.crewMember.user.id = :myUserId " +
-            "AND cp2.crewMember.user.id = :otherUserId " +
-            "AND cp1.chatRoom.isGroupChat = 'N' " +
             "AND cp1.chatRoom.delYn = 'N' " +
             "AND cp1.chatRoom.crew.id = :crewId") // ✅ 크루 조건 추가
     Optional<ChatRoom> findExistingPrivateRoom(@Param("myUserId") Long myUserId,
@@ -78,8 +69,5 @@ public interface ChatParticipantRepository extends JpaRepository<ChatParticipant
             "WHERE cp.chatRoom = :chatRoom AND cp.crewMember != :me")
     Optional<ChatParticipant> findOpponentInPrivateRoom(@Param("chatRoom") ChatRoom chatRoom,
                                                         @Param("me") CrewMember me);
-
-    @Query("SELECT cr FROM ChatRoom cr WHERE cr.crew.id = :crewId AND cr.delYn = 'N'")
-    List<ChatRoom> findAllByCrewId(@Param("crewId") Long crewId);
 
 }

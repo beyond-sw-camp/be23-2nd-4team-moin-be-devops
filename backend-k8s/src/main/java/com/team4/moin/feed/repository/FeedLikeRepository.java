@@ -25,9 +25,6 @@ public interface FeedLikeRepository extends JpaRepository<FeedLike, Long> {
     @Query("SELECT fl.feed.id FROM FeedLike fl WHERE fl.feed.id IN :feedIds AND fl.user.email = :email")
     List<Long> findMyLikedFeedIds(@Param("feedIds") List<Long> feedIds, @Param("email") String email);
 
-    // 기존 토글용
-    Optional<FeedLike> findByFeedIdAndUserEmail(Long feedId, String email);
-
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = """
     INSERT IGNORE INTO feed_like (feed_id, user_id, created_time, updated_time)

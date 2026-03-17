@@ -16,8 +16,6 @@ public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Lo
     Optional<MeetingMember> findByMeeting_IdAndCrewMember_User_IdAndStatus(Long meetingId, Long userId, MeetingMemberStatus status);
     //  모임 중복 가입신청 방지 (exists : 조건에 맞는 데이터가 하나라도 있는지 확인)
     boolean existsByMeeting_IdAndCrewMember_User_IdAndStatusIn(Long meetingId, Long userId, List<MeetingMemberStatus> statuses);
-    //    이 모임에 신청한 가입이 맞는지 확인
-    Optional<MeetingMember> findByIdAndMeeting_Id(Long id, Long meetingId);
 
     // 모임 삭제 전에 모임원 기록을 먼저 지우는 용도
     // meeting 삭제(하드딜리트)하면 FK 때문에 터질 수 있어서 meeting_member 먼저 삭제
@@ -47,20 +45,10 @@ public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Lo
     // 특정 모임(Meeting)에서 '환불 요청' 상태인 멤버들 조회
     List<MeetingMember> findAllByMeetingIdAndStatus(Long meetingId, MeetingMemberStatus status);
 
-    // 특정 크루 멤버(CrewMember)의 환불/취소 내역 조회
-    List<MeetingMember> findAllByCrewMemberIdAndStatusIn(Long crewMemberId, List<MeetingMemberStatus> statuses);
-    @Query("SELECT COALESCE(SUM(m.meeting.fee), 0) FROM MeetingMember m " +
-            "WHERE m.meeting.id = :meetingId AND m.status = :status")
-    Long sumFeeByMeetingIdAndStatus(
-            @Param("meetingId") Long meetingId,
-            @Param("status") MeetingMemberStatus status
-    );
 //이 크루 맴버가 참여중인 모든 모임을 가져옴
     List<MeetingMember> findAllByCrewMember_IdAndStatus(
             Long crewMemberId, MeetingMemberStatus status);
 
-// 이 크루 맴버가 참여중인 모임중에 모임장인 모임이 있는지 확인
-    boolean existsByCrewMember_IdAndStatusAndRole(Long crewMemberId, MeetingMemberStatus status, MeetingRole role);
     // [수정] FETCH JOIN을 사용하여 Meeting 정보를 세션이 열려있을 때 한 번에 가져옴
     @Query("SELECT mm FROM MeetingMember mm " +
             "JOIN FETCH mm.meeting " +
@@ -83,7 +71,4 @@ public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Lo
             @Param("meetingId") Long meetingId,
             @Param("status") MeetingMemberStatus status
     );
-
-
-
 }

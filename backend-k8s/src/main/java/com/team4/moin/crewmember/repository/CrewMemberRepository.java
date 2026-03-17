@@ -20,7 +20,6 @@ import java.util.Optional;
 public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
 
     Optional<CrewMember> findByCrewAndUser(Crew crew, User user);
-    List<CrewMember> findAllByUser(User user);
 
 //    user email로 CrewMember 다건 조회
     @Query("SELECT cm FROM CrewMember cm JOIN FETCH cm.user u JOIN FETCH cm.crew c WHERE u.email = :email")
@@ -33,10 +32,11 @@ public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
 
 //   크루 권한 확인
     Optional<CrewMember> findByCrew_IdAndUser_IdAndStatus(Long crewId, Long userId, CrewMemberStatus status);
-    boolean existsByCrew_IdAndUser_Id(Long crewId, Long userId);
+
+
 //    이 크루에 신청한 가입이 맞는지 확인
     Optional<CrewMember> findByIdAndCrew_Id(Long id, Long crewId);
-    List<CrewMember> findAllByCrew_IdAndStatus(Long crewId, CrewMemberStatus status);
+
 
 
 

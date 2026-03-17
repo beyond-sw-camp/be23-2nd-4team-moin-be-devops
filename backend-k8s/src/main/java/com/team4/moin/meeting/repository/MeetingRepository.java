@@ -81,21 +81,8 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
             @Param("now") LocalDateTime now,
             @Param("oneWeekLater") LocalDateTime oneWeekLater
     );
-    /**
-     * 특정 크루 내의 전체 모임 페이징 조회 (크루원 전용)
-     */
-    @Query("SELECT m FROM Meeting m " +
-            "JOIN m.crew c " +
-            "JOIN CrewMember cm ON cm.crew = c " +
-            "WHERE cm.user.id = :userId " +
-            "AND cm.status = :crewStatus " +
-            "AND c.delYn = 'No' " +
-            "ORDER BY m.meetingAt DESC")
-    Page<Meeting> findAllByJoinedCrews(
-            @Param("userId") Long userId,
-            @Param("crewStatus") CrewMemberStatus crewStatus,
-            Pageable pageable
-    );
+
+
     @Query("SELECT mm.meeting FROM MeetingMember mm " +
             "WHERE mm.crewMember.user.id = :userId " +
             "AND mm.status = :status " +
