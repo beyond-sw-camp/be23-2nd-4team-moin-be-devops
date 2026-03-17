@@ -68,7 +68,21 @@ public interface CrewRepository extends JpaRepository<Crew, Long> {
             @Param("fourteenDaysAgo") LocalDateTime fourteenDaysAgo,
             Pageable pageable
     );
-    @Query("SELECT c FROM Crew c WHERE c.delYn = 'No' AND " +
-            "(c.name LIKE CONCAT(:keyword, '%') OR c.chosung LIKE CONCAT(:keyword, '%'))")
-    List<Crew> findTop5BySearchKeyword(@Param("keyword") String keyword);
+    @Query("""
+SELECT c
+FROM Crew c
+WHERE c.delYn = 'No'
+AND c.name LIKE CONCAT(:keyword, '%')
+ORDER BY c.id DESC
+""")
+    List<Crew> findByNameKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("""
+SELECT c
+FROM Crew c
+WHERE c.delYn = 'No'
+AND c.chosung LIKE CONCAT(:keyword, '%')
+ORDER BY c.id DESC
+""")
+    List<Crew> findByChosungKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
