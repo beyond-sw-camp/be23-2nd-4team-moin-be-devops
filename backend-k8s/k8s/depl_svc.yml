@@ -4,7 +4,7 @@ metadata:
   name: moin-deployment
   namespace: moin
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-moin
