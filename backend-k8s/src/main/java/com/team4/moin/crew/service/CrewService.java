@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisOperations;
@@ -495,8 +496,12 @@ public class CrewService {
             return Collections.emptyList();
         }
 
-        //  원본과 초성을 동시에 검사하는 새로운 레포지토리 메서드 호출
-        List<Crew> crews = crewRepository.findTop5BySearchKeyword(keyword);
+        String normalized = keyword.trim();
+        boolean chosungOnly = normalized.matches("^[ㄱ-ㅎ]+$");
+
+        List<Crew> crews = chosungOnly
+                ? crewRepository.findByChosungKeyword(normalized, PageRequest.of(0, 5))
+                : crewRepository.findByNameKeyword(normalized, PageRequest.of(0, 5));
 
         return crews.stream()
                 .map(CrewSuggestResponseDto::fromEntity)

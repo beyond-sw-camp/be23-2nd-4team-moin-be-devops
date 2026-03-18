@@ -33,20 +33,7 @@ public interface SettlementLogRepository extends JpaRepository<SettlementLog, Lo
             "AND sl.isSettled = 'YES'")
     Long sumTotalSettledByOwnerId(@Param("ownerId") Long ownerId);
 
-    @Query("SELECT SUM(s.amount) FROM SettlementLog s WHERE s.meeting.id = :meetingId AND s.isSettled IN :statuses")
-    Long sumAmountByMeetingIdAndStatusIn(@Param("meetingId") Long meetingId, @Param("statuses") List<SettlementStatus> statuses);
-
-    // 정산 완료 여부 확인
-    boolean existsByMeetingIdAndIsSettled(Long meetingId, SettlementStatus status);
     @Query("SELECT SUM(s.amount) FROM SettlementLog s WHERE s.meeting.id = :meetingId AND s.isSettled = :status")
     Long sumAmountByMeetingIdAndStatus(@Param("meetingId") Long meetingId, @Param("status") SettlementStatus status);
-    @Query("SELECT COUNT(s) > 0 FROM SettlementLog s " +
-            "WHERE s.meeting.id = :meetingId " +
-            "AND s.isSettled = :status " +
-            "AND s.createdTime > :memberJoinedAt")
-    boolean existsByMeetingIdAndIsSettledAndCreatedTimeAfter(
-            @Param("meetingId") Long meetingId,
-            @Param("status") SettlementStatus status,
-            @Param("memberJoinedAt") LocalDateTime memberJoinedAt
-    );
+
 }

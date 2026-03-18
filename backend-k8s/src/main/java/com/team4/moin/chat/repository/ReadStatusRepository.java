@@ -16,9 +16,7 @@ import java.util.List;
 
 @Repository
 public interface ReadStatusRepository extends JpaRepository<ReadStatus, Long> {
-    List<ReadStatus> findByChatRoomAndCrewMember(ChatRoom chatRoom, CrewMember crewMember);
 
-//    Long countByChatMessageAndIsRead(ChatMessage chatMessage, Boolean isRead);
 
     // 안 읽은 메시지 수 조회 시 LEAVED 상태인 CrewMember 제외
     @Query("SELECT rs.chatMessage.id, COUNT(rs) FROM ReadStatus rs JOIN rs.crewMember cm " +
@@ -27,13 +25,6 @@ public interface ReadStatusRepository extends JpaRepository<ReadStatus, Long> {
             "AND cp.status = 'JOINED' GROUP BY rs.chatMessage.id")
     List<Object[]> countByMessageIdsAndIsRead(@Param("messageIds") List<Long> messageIds,
                                               @Param("isRead") Boolean isRead);
-
-    // 여러 채팅방의 안 읽은 메시지 개수 조회 시 LEAVED 상태인 CrewMember 제외
-    @Query("SELECT rs.chatRoom.id, COUNT(rs) FROM ReadStatus rs JOIN ChatParticipant cp ON cp.crewMember = rs.crewMember AND cp.chatRoom = rs.chatRoom " +
-            "WHERE rs.chatRoom.id IN :chatRoomIds AND rs.crewMember = :crewMember " +
-            "AND rs.isRead = false AND cp.status = 'JOINED' GROUP BY rs.chatRoom.id")
-    List<Object[]> countUnreadByRoomsAndCrewMember(@Param("chatRoomIds") List<Long> chatRoomIds,
-                                                   @Param("crewMember") CrewMember crewMember);
 
     // 추가: countUnreadByRoomsAndCrewMembers - CrewMember 리스트
     @Query("SELECT rs.chatRoom.id, COUNT(rs) FROM ReadStatus rs " +
